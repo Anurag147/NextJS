@@ -1,34 +1,46 @@
-import React from "react";
-import Link from "next/link";
-import style from './EventItem.module.css';
+import Button from '../ui/button';
+import DateIcon from '../icons/date-icon';
+import AddressIcon from '../icons/address-icon';
+import ArrowRightIcon from '../icons/arrow-right-icon';
+import classes from './EventItem.module.css';
 
-const EventItem = (props) => {
-    const readAbleDate = new Date(props.date).toLocaleDateString('en-US',{
-        day:"numeric",
-        month:"long",
-        year:"numeric"
-    });
-    const readAbleAddress = props.location.replace(',','\n');
-    const exploreLink = `/events/${props.id}`;
-        return (
-            <li className={style.item}>
-                <img src={"/"+props.image} alt={props.title}/>
-                <div className={style.content}>
-                    <div className={style.summary}>
-                        <h2>{props.title}</h2>
-                        <div className={style.date}>
-                            <time>{readAbleDate}</time>
-                        </div>
-                        <div className={style.address}>
-                            <address>{readAbleAddress}</address>
-                        </div>
-                    </div>
-                    <div className={style.actions}>
-                        <Link href={exploreLink}>Explore Events</Link>
-                    </div>
-                </div>
-            </li>
-        )
+function EventItem(props) {
+  const { title, image, date, location, id } = props;
+
+  const humanReadableDate = new Date(date).toLocaleDateString('en-US', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+  const formattedAddress = location.replace(', ', '\n');
+  const exploreLink = `/events/${id}`;
+
+  return (
+    <li className={classes.item}>
+      <img src={'/' + image} alt={title} />
+      <div className={classes.content}>
+        <div className={classes.summary}>
+          <h2>{title}</h2>
+          <div className={classes.date}>
+            <DateIcon />
+            <time>{humanReadableDate}</time>
+          </div>
+          <div className={classes.address}>
+            <AddressIcon />
+            <address>{formattedAddress}</address>
+          </div>
+        </div>
+        <div className={classes.actions}>
+          <Button link={exploreLink}>
+            <span>Explore Event</span>
+            <span className={classes.icon}>
+              <ArrowRightIcon />
+            </span>
+          </Button>
+        </div>
+      </div>
+    </li>
+  );
 }
 
 export default EventItem;
